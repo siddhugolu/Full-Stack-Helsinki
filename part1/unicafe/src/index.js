@@ -17,18 +17,11 @@ const Display = ({value, text}) => {
 }
 
 const Statistics = ({good, neutral, bad, query}) => {
-	if(query === 'avg') {
+	const total = good + neutral + bad
+	if(total === 0) {
 		return (
 			<div>
-			  Average: {(good - bad)/(good + neutral + bad)}
-			</div>
-		)
-	}
-
-	else if(query === 'pos') {
-			return (
-			<div>
-			  Positive: {good*100/(good + neutral + bad)} %
+			  No feedback given
 			</div>
 		)
 	}
@@ -37,10 +30,18 @@ const Statistics = ({good, neutral, bad, query}) => {
 
 		return (
 			<div>
-			  <Display value={good} text='Good' />
-			  <Display value={neutral} text='Neutral' />
-			  <Display value={bad} text='Bad' />
-			  <Display value={good+neutral+bad} text='All' />
+			  <div>
+			    <Display value={good} text='Good' />
+			    <Display value={neutral} text='Neutral' />
+			    <Display value={bad} text='Bad' />
+			    <Display value={good+neutral+bad} text='All' />
+			  </div>
+			  <div>
+			    Average: {(good - bad)/(good + neutral + bad)}
+			  </div>
+			  <div>
+			    Positive: {good*100/(good + neutral + bad)} %
+			  </div>
 			</div>
 		)
 	}
@@ -72,9 +73,7 @@ const App = () => {
 		  <Button onClick={handleBad} text='Bad' />
 
 		  <h2> Statistics </h2>
-		  <Statistics good={good} neutral={neutral} bad={bad} query=' ' />
-		  <Statistics good={good} neutral={neutral} bad={bad} query='avg' />
-		  <Statistics good={good} neutral={neutral} bad={bad} query='pos' />
+		  <Statistics good={good} neutral={neutral} bad={bad} />
 
 		</div>
 	)
