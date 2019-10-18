@@ -10,9 +10,10 @@ const Button = ({onClick, text}) => (
 
 const Statistic = ({value, text}) => {
 	return (
-		<div>
-		  {text}: {value}
-		</div>
+			<>
+		      <td> {text} </td> 
+		      <td> {value} </td>
+		    </>
 	)
 }
 
@@ -21,23 +22,41 @@ const Statistics = ({good, neutral, bad, query}) => {
 	const posPercent = good*100/total + ' %'
 	if(total === 0) {
 		return (
-			<div>
-			  No feedback given
-			</div>
+			<>
+			<tr>
+			  <td> No feedback given </td>
+			</tr>
+			</>
 		)
 	}
 
 	else {
 
 		return (
-			<div>
+			
+			
+			<>
+			  <tr>
 			    <Statistic value={good} text='Good' />
+			  </tr>
+			  <tr>
 			    <Statistic value={neutral} text='Neutral' />
+			  </tr>
+			  <tr>
 			    <Statistic value={bad} text='Bad' />
+			  </tr>
+			  <tr>
 			    <Statistic value={total} text='All' />
+			  </tr>
+			  <tr>
 			    <Statistic value={(good - bad)/total} text='Average' />
+			  </tr>
+			  <tr>
 			    <Statistic value={posPercent} text='Positive' />
-			</div>
+			  </tr>
+			</>
+			
+			
 		)
 	}
 }
@@ -68,7 +87,11 @@ const App = () => {
 		  <Button onClick={handleBad} text='Bad' />
 
 		  <h2> Statistics </h2>
-		  <Statistics good={good} neutral={neutral} bad={bad} />
+		  <table>
+		    <tbody>
+		      <Statistics good={good} neutral={neutral} bad={bad} />
+		    </tbody>
+		  </table>
 
 		</div>
 	)
