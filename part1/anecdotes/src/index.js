@@ -5,16 +5,27 @@ import './index.css';
 // import * as serviceWorker from './serviceWorker';
 
 const App = (props) => {
-	const [selected, setSelected] = useState(0)
-
+	let [selected, setSelected] = useState(0)
+	const [votes, setVotes] = useState(new Array(props.anecdotes.length).fill(0))
+	
 	const value = Math.floor(Math.random() * (props.anecdotes.length))
-	console.log(value)
 
+	console.log(value)
+	selected = value
+
+	const handleVote = () => {
+		const newVotes = [...votes]
+		newVotes[selected] += 1
+		setVotes(newVotes)
+	}
+	
 	return (
 		<div>
 		  {props.anecdotes[selected]}
+		  <p> This quote has {votes[selected]} votes </p>
 		  <p>
-		    <button onClick={() => setSelected(value)}> Click for the next anecdote </button>
+		    <button onClick={handleVote}> Vote </button>
+		    <button onClick={() => setSelected(selected)}> Click for the next anecdote </button>
 		  </p>
 		</div>
 	)
