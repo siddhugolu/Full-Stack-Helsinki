@@ -4,13 +4,30 @@ import './index.css';
 // import App from './App';
 // import * as serviceWorker from './serviceWorker';
 
+const MaxQuote = ({votes, anecdotes}) => {
+	let max = votes[0]
+	let max_i = 0
+	for(let i = 1; i<votes.length; i++) {
+		if(votes[i] > max) {
+			max = votes[i]
+			max_i = i
+		}
+	}
+
+	return (
+		<div>
+		  {anecdotes[max_i]}
+		  <p> This quote has {max} votes </p>
+		</div>
+	)
+}
+
 const App = (props) => {
 	let [selected, setSelected] = useState(0)
 	const [votes, setVotes] = useState(new Array(props.anecdotes.length).fill(0))
 	
 	const value = Math.floor(Math.random() * (props.anecdotes.length))
 
-	console.log(value)
 	selected = value
 
 	const handleVote = () => {
@@ -19,14 +36,22 @@ const App = (props) => {
 		setVotes(newVotes)
 	}
 	
+	console.log(votes)
+	console.log(selected)
 	return (
 		<div>
+		<h1> Anecdote of the Day! </h1>
+		<>
 		  {props.anecdotes[selected]}
+		</>
 		  <p> This quote has {votes[selected]} votes </p>
 		  <p>
 		    <button onClick={handleVote}> Vote </button>
 		    <button onClick={() => setSelected(selected)}> Click for the next anecdote </button>
 		  </p>
+
+		<h2> Anecdote with most votes </h2>
+		<MaxQuote votes={votes} anecdotes={props.anecdotes} />
 		</div>
 	)
 }
