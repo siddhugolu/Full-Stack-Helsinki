@@ -10,19 +10,28 @@ const App = () => {
 
 	const addName = (event) => {
 		event.preventDefault()
-		// console.log(event.target)
-		const newObject = {
-			name: newName,
-			id: persons.length + 1
+		
+		const checkName = newName
+		const pos = persons.findIndex(p => p.name === newName)
+		console.log(pos)
+		if(pos === -1) {
+			const newObject = {
+				name: newName,
+				id: persons.length + 1
+			}
+			setPersons(persons.concat(newObject))
+			setNewName('')
 		}
-		setPersons(persons.concat(newObject))
-		setNewName('')
+		else {
+			window.alert(`${checkName} is already added to Phonebook`)
+		}
 
 	}
 
 	const handleNewPerson =(event) => {
 		// console.log(event.target.value)
 		setNewName(event.target.value)
+
 	}
 
 	const showPersons = () => persons.map(p => 
