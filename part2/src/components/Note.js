@@ -6,5 +6,4 @@ const Note = ({ note }) => {
 	)
 }
 
-
-export default Note
+export default Note 
