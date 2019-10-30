@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import PersonForm from './components/PersonForm'
-import Persons from './components/Persons'
+import Entry from './components/Entry'
 import phoneService from './services/phonebook'
 
 const App = () => {
@@ -23,7 +23,7 @@ const App = () => {
 		if(pos === -1) {
 			const newObject = {
 				name: newName,
-				number: newNumber
+				phone: newNumber
 			}
 			phoneService.create(newObject)
 						.then(newPerson => {
@@ -55,12 +55,22 @@ const App = () => {
 		if(window.confirm(`Delete ${entry.name}?`)) {
 			phoneService.deleteOne(id)
 			.then(returned => {
-				console.log("Delete request issued")
-				setPersons(persons)
+				console.log(`Delete request issued`)
+				setPersons(persons.filter(p => p.id !== id))
 			})
 		}
 		
 	}
+
+	const filterPersons = persons.filter(p => p.name.toLowerCase().includes(newSearch.toLowerCase()))
+
+
+	const showEntry = () => filterPersons.map(p => 
+			<Entry key={p.id}
+				person={p}
+				deleteEntry={() => deleteEntryOf(p.id)}
+			/>
+		)
 
 	return (
 		<div>
@@ -77,7 +87,7 @@ const App = () => {
 						handleNewNumber={handleNewNumber} />
 
 			<h3>Numbers </h3> 
-			<Persons persons={persons} newSearch={newSearch} deleteEntry={() => deleteEntryOf()} />
+			{showEntry()}
 			
 		</div>
 	)
