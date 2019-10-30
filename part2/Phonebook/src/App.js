@@ -14,6 +14,7 @@ const App = () => {
 				.then(directory => {
 					setPersons(directory)
 				})
+				.catch(() => console.log('Rejected during getAll'))
 	}, [])
 
 	const addNameNumber = (event) => {
@@ -31,9 +32,22 @@ const App = () => {
 							setNewName('')
 							setNewNumber('')
 						})
+						.catch(() => console.log('Rejected during create'))
 		}
 		else {
-			alert(`${newName} is already added to Phonebook`)
+			if(window.confirm(`${newName} is already added to Phonebook. Replace the old number with a new one?`)) {
+				const person = persons.find(p => p.name === newName)
+				const changedPerson = {...person, phone: newNumber}
+				const newId = person.id
+				phoneService.update(newId, changedPerson)
+							.then(returned => {
+								setPersons(persons.map(p => 
+									p.id === newId ? returned : p))
+								setNewName('')
+								setNewNumber('')
+							})
+							.catch(() => console.log('Rejected during udpate'))
+			}
 		}
 
 	}
@@ -63,7 +77,6 @@ const App = () => {
 	}
 
 	const filterPersons = persons.filter(p => p.name.toLowerCase().includes(newSearch.toLowerCase()))
-
 
 	const showEntry = () => filterPersons.map(p => 
 			<Entry key={p.id}
