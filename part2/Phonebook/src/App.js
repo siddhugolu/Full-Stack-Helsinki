@@ -2,12 +2,15 @@ import React, {useState, useEffect} from 'react'
 import PersonForm from './components/PersonForm'
 import Entry from './components/Entry'
 import phoneService from './services/phonebook'
+import Notification from './components/Notification'
 
 const App = () => {
 	const [persons, setPersons] = useState([])
 	const [newName, setNewName] = useState('')
 	const [newNumber, setNewNumber] = useState('')
 	const [newSearch, setNewSearch] = useState('')
+	const [message, setMessage] = useState(null)
+	const [isError, setIsError] = useState(false)
 
 	useEffect(() => {
 		phoneService.getAll()
@@ -31,6 +34,11 @@ const App = () => {
 							setPersons(persons.concat(newPerson))
 							setNewName('')
 							setNewNumber('')
+							setIsError(false)
+							setMessage(`Added ${newName}`)
+							setTimeout(() => {
+								setMessage(null)
+							}, 3000)
 						})
 						.catch(() => console.log('Rejected during create'))
 		}
@@ -45,8 +53,22 @@ const App = () => {
 									p.id === newId ? returned : p))
 								setNewName('')
 								setNewNumber('')
+								setIsError(false)
+								setMessage(`Updated ${person.name}`)
+								setTimeout(() => {
+									setMessage(null)
+								}, 3000)
 							})
-							.catch(() => console.log('Rejected during udpate'))
+							.catch(() => {
+								console.log('Rejected during udpate')
+								setIsError(true)
+								setMessage(
+									`Information of ${person.name} has already been removed from server`
+								)
+								setTimeout(() => {
+									setMessage(null)
+								}, 3000)
+							})
 			}
 		}
 
@@ -71,6 +93,19 @@ const App = () => {
 			.then(returned => {
 				console.log(`Delete request issued`)
 				setPersons(persons.filter(p => p.id !== id))
+				setIsError(false)
+				setMessage(`${entry.name} deleted`)
+				setTimeout(() => {
+					setMessage(null)
+				}, 3000)
+			})
+			.catch(() => {
+				console.log('Rejected during delete')
+				setIsError(true)
+				setMessage(`Information of ${entry.name} has already been deleted from server`)
+				setTimeout(() => {
+					setMessage(null)
+				}, 3000)
 			})
 		}
 		
@@ -88,6 +123,9 @@ const App = () => {
 	return (
 		<div>
 			<h1> Working with Phonebook </h1>
+
+			<Notification message={message} isFailure={isError}/>
+
 			<div>
 				Filter shown with: <input value={newSearch} onChange={handleNewSearch} />
 			</div>
