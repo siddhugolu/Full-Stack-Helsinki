@@ -1,5 +1,8 @@
 const express = require('express')
 const app = express()
+const bodyParser = require('body-parser')
+
+app.use(bodyParser.json())
 
 let persons = [
     {
@@ -35,6 +38,53 @@ app.get('/info', (req, res) => {
     <p> Phonebook has info for ${persons.length} people </p>
     <p> Request received at: ${date} </p>
     `)
+})
+
+app.get('/api/persons/:id', (req, res) => {
+    const id = Number(req.params.id)
+    const person = persons.find(p => p.id === id)
+
+    if(person) {
+        res.json(person)
+    } else {
+        res.status(404).end()
+    }
+})
+
+app.delete('/api/persons/:id', (req, res) => {
+    const id = Number(req.params.id)
+    persons = persons.filter(p => p.id !== id)
+
+    res.status(204).end()
+})
+
+const generateId = () => {
+    return Math.floor(Math.random() * Math.floor(10000))
+}
+
+app.post('/api/persons', (req, res) => {
+    const body = req.body
+    const pos = persons.findIndex(p => p.name === body.name)
+    if(!body.name || !body.number) {
+        return res.status(400).json({
+            error: 'Name/Number is missing'
+        })
+    }
+    
+    if(pos !== -1) {
+        return res.status(400).json({
+            error: 'Name must be unique'
+        })
+    }
+
+    const person = {
+        name: body.name,
+        number: body.number,
+        id: generateId()
+    }
+
+    persons = persons.concat(person)
+    res.json(person)
 })
 
 const port = 3001
