@@ -1,1 +1,1 @@
-GET http://localhost:3001/api/persons
+GET https://whispering-brook-49882.herokuapp.com/api/persons
