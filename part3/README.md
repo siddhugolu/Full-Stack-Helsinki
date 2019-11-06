@@ -1,3 +1,3 @@
 # Phonebook with Heroku
 
-The backend is hosted at: [https://whispering-brook-49882.herokuapp.com/api/persons](https://whispering-brook-49882.herokuapp.com/api/persons)
+The Phonebook fullstack is hosted at: [https://whispering-brook-49882.herokuapp.com/](https://whispering-brook-49882.herokuapp.com/)
