@@ -43,33 +43,34 @@ const App = () => {
 						.catch(() => console.log('Rejected during create'))
 		}
 		else {
-			// if(window.confirm(`${newName} is already added to Phonebook. Replace the old number with a new one?`)) {
-			// 	const person = persons.find(p => p.name === newName)
-			// 	const changedPerson = {...person, phone: newNumber}
-			// 	const newId = person.id
-			// 	phoneService.update(newId, changedPerson)
-			// 				.then(returned => {
-			// 					setPersons(persons.map(p => 
-			// 						p.id === newId ? returned : p))
-			// 					setNewName('')
-			// 					setNewNumber('')
-			// 					setIsError(false)
-			// 					setMessage(`Updated ${person.name}`)
-			// 					setTimeout(() => {
-			// 						setMessage(null)
-			// 					}, 3000)
-			// 				})
-			// 				.catch(() => {
-			// 					console.log('Rejected during udpate')
-			// 					setIsError(true)
-			// 					setMessage(
-			// 						`Information of ${person.name} has already been removed from server`
-			// 					)
-			// 					setTimeout(() => {
-			// 						setMessage(null)
-			// 					}, 3000)
-			// 				})
-			// }
+			if(window.confirm(`${newName} is already added to Phonebook. Replace the old number with a new one?`)) {
+				const person = persons.find(p => p.name === newName)
+				const changedPerson = {...person, number: newNumber}
+				const newId = person.id
+	
+				phoneService.update(newId, changedPerson)
+							.then(returned => {
+								setPersons(persons.map(p => 
+									p.id === newId ? returned : p))
+								setNewName('')
+								setNewNumber('')
+								setIsError(false)
+								setMessage(`Updated ${person.name}`)
+								setTimeout(() => {
+									setMessage(null)
+								}, 3000)
+							})
+							.catch(() => {
+								console.log('Rejected during udpate')
+								setIsError(true)
+								setMessage(
+									`Information of ${person.name} has already been removed from server`
+								)
+								setTimeout(() => {
+									setMessage(null)
+								}, 3000)
+							})
+			}
 			setIsError(true)
 			setMessage(`${newName} is already added to Phonebook`)
 			setTimeout(() => {
