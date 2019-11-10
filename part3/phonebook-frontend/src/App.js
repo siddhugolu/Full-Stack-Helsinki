@@ -40,7 +40,17 @@ const App = () => {
 								setMessage(null)
 							}, 3000)
 						})
-						.catch(() => console.log('Rejected during create'))
+						.catch(error => {
+							console.log(error.response.data)
+							setNewName('')
+							setNewNumber('')
+							setIsError(true)
+							const errorMessage = JSON.stringify(error.response.data)
+							setMessage(`${errorMessage}`)
+							setTimeout(() => {
+								setMessage(null)
+							}, 3000)
+						})
 		}
 		else {
 			if(window.confirm(`${newName} is already added to Phonebook. Replace the old number with a new one?`)) {
@@ -60,12 +70,13 @@ const App = () => {
 									setMessage(null)
 								}, 3000)
 							})
-							.catch(() => {
-								console.log('Rejected during udpate')
+							.catch(error => {
+								console.log(error.response.data)
+								setNewName('')
+								setNewNumber('')
 								setIsError(true)
-								setMessage(
-									`Information of ${person.name} has already been removed from server`
-								)
+								const errorMessage = JSON.stringify(error.response.data)
+								setMessage(`${errorMessage}`)
 								setTimeout(() => {
 									setMessage(null)
 								}, 3000)
