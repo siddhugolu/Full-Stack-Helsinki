@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 mongoose.set('useFindAndModify', false)
 const url = process.env.MONGODB_URI
+const uniqueValidator = require('mongoose-unique-validator')
 
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
         .then(result => {
@@ -11,8 +12,15 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
         })
 
 const phoneSchema = new mongoose.Schema({
-    name: String,
-    number: String,
+    name: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    number: {
+        type: Number,
+        required: true
+    }
 })
 
 phoneSchema.set('toJSON', {
@@ -22,5 +30,7 @@ phoneSchema.set('toJSON', {
         delete returnedObject.__v
     }
 })
+
+phoneSchema.plugin(uniqueValidator)
 
 module.exports = mongoose.model('Phonebook', phoneSchema)
