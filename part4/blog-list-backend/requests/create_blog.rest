@@ -1,0 +1,9 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "title": "Learn Git concepts, not commands",
+    "author": "unseenWizard",
+    "url": "https://dev.to/unseenwizzard/learn-git-concepts-not-commands-4gjc",
+    "likes": 140
+}
