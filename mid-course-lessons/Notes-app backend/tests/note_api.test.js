@@ -8,6 +8,8 @@ const helper = require('./test_helper')
 const Note = require('../models/note')
 const User = require('../models/user')
 
+jest.setTimeout(30000)
+
 describe('when there are initially some notes saved', () => {
     beforeEach(async () => {
         await Note.deleteMany({})
@@ -129,13 +131,13 @@ describe('when there are initially some notes saved', () => {
 
 describe('when there is initially one user in DB', () => {
     beforeEach(async () => {
-        User.deleteMany()
+        await User.deleteMany()
         const user = new User({ username: 'root', password: 'sekret' })
         await user.save()
     })
 
     test('creation succeeds with a fresh username', async () => {
-        const usersAtStart = helper.usersInDb()
+        const usersAtStart = await helper.usersInDb()
 
         const newUser = {
             username: 'siddhugolu',
@@ -149,7 +151,7 @@ describe('when there is initially one user in DB', () => {
             .expect(200)
             .expect('Content-Type', /application\/json/)
 
-        const usersAtEnd = helper.usersInDb()
+        const usersAtEnd = await helper.usersInDb()
         expect(usersAtEnd.length).toBe(usersAtStart.length + 1)
 
         const usernames = usersAtEnd.map(u => u.username)
@@ -157,7 +159,7 @@ describe('when there is initially one user in DB', () => {
     })
 
     test('creation fails with proper code and message if username already taken', async () => {
-        const usersAtStart = helper.usersInDb()
+        const usersAtStart = await helper.usersInDb()
 
         const newUser = {
             username: 'root',
@@ -173,7 +175,7 @@ describe('when there is initially one user in DB', () => {
 
         expect(result.body.error).toContain('`username` to be unique')
 
-        const usersAtEnd = helper.usersInDb()
+        const usersAtEnd = await helper.usersInDb()
         expect(usersAtEnd.length).toBe(usersAtStart.length)
     })
 })
