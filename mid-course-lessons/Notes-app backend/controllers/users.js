@@ -4,7 +4,9 @@ const User = require('../models/user')
 
 usersRouter.get('/', async (request, response, next) => {
     try {
-        const users = User.find({})
+        const users = await User.find({})
+            .populate('notes', { content: 1, date: 1 })
+
         response.json(users.map(u => u.toJSON()))
     } catch(exception) {
         next(exception)
@@ -26,7 +28,7 @@ usersRouter.post('/', async (request, response, next) => {
 
         const savedUser = await user.save()
         response.json(savedUser)
-        
+
     } catch(exception) {
         next(exception)
     }
