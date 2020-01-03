@@ -1,8 +1,9 @@
 post http://localhost:3001/api/notes
 Content-Type: application/json
+Authorization: bearer eyGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNpZGRodWdvbHUiLCJpZCI6IjVkZmEwYjFkMDk1YjYyMTI2MDdjYTc0OCIsImlhdCI6MTU3ODA0OTY3NH0.9lmAs3I7VPKR-Csi3sWfSpc4YCsYB5WHkInkotABz8Y
 
 {
-    "content": "Testing again with a different note",
+    "content": "Single page app uses token authorization",
     "important": true,
     "userId": "5dfa0b1d095b6212607ca748"
 }
