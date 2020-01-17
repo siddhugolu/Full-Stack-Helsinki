@@ -1,9 +1,9 @@
-POST http://localhost:3003/api/blogs
+POST http://localhost:3001/api/blogs
 Content-Type: application/json
 
 {
-    "title": "Learn Git concepts, not commands",
-    "author": "unseenWizard",
-    "url": "https://dev.to/unseenwizzard/learn-git-concepts-not-commands-4gjc",
-    "likes": 140
+    "title": "Canonical string reduction",
+    "author": "Edsger W. Dijkstra",
+    "url": "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
+    "likes": 12
 }
