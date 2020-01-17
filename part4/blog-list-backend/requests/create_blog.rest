@@ -1,9 +1,10 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
+Authorization: bearer eJhbGciOiJIUzIkpXVCJ9.eyJ1c2VybmFtZSI6InNpZGRodWdvbHUiLCJpZCI6IjVlMjE1MWZhMTg4MWUwMTA0ZWJjMGQwOCIsImlhdCI6MTU3OTI1ODc5M30.jjsIcqKGvySX7Z0eYX4JNquOM6OFCCw1ySfgvCYEvvg
 
 {
-    "title": "Canonical string reduction",
-    "author": "Edsger W. Dijkstra",
-    "url": "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
-    "likes": 12
+    "title": "Checking with logged-in user",
+    "author": "Siddhartha",
+    "url": "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
+    "likes": 10
 }
