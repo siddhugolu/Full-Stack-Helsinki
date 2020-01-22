@@ -10,6 +10,21 @@ blogsRouter.get('/', async (request, response) => {
     response.json(blogs.map(blog => blog.toJSON()))
 })
 
+blogsRouter.get('/:id', async (request, response, next) => {
+    try {
+        const blog = await Blog
+            .findById(request.params.id)
+            .populate('user', { username: 1, name: 1 })
+        if(blog) {
+            response.json(blog.toJSON())
+        } else {
+            response.status(404).end()
+        }
+
+    } catch (exception) {
+        next(exception)
+    }
+})
 
 blogsRouter.post('/', async (request, response, next) => {
     const body = request.body
@@ -47,9 +62,21 @@ blogsRouter.post('/', async (request, response, next) => {
 })
 
 blogsRouter.delete('/:id', async (request, response, next) => {
+
     try {
-        await Blog.findByIdAndRemove(request.params.id)
-        response.status(204).end()
+        const blog = await Blog.findById(request.params.id)
+        const decodedToken = jwt.verify(request.token, process.env.SECRET)
+        if( !request.token || !decodedToken.id ) {
+            return response.status(401).json({ error: 'token missing or invalid' })
+        }
+        if(blog.user.toString() === decodedToken.id.toString()) {
+            console.log('user matched! Deleting the blog...')
+            await Blog.findByIdAndDelete(request.params.id)
+            response.status(204).end()
+        }
+        else {
+            return response.status(401).json({ error: 'invalid access, user not the owner of the blog' })
+        }
     } catch(exception) {
         next(exception)
     }
@@ -58,7 +85,7 @@ blogsRouter.delete('/:id', async (request, response, next) => {
 blogsRouter.put('/:id', async (request, response, next) => {
 
     try {
-        const updatedBlog = 
+        const updatedBlog =
             await Blog.findByIdAndUpdate(request.params.id, request.body, { new: true })
         console.log(updatedBlog)
         response.json(updatedBlog.toJSON())

@@ -1,9 +1,9 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: bearer eJhbGciOiJIUzIkpXVCJ9.eyJ1c2VybmFtZSI6InNpZGRodWdvbHUiLCJpZCI6IjVlMjE1MWZhMTg4MWUwMTA0ZWJjMGQwOCIsImlhdCI6MTU3OTI1ODc5M30.jjsIcqKGvySX7Z0eYX4JNquOM6OFCCw1ySfgvCYEvvg
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRoZWxhenlveHltb3JvbiIsImlkIjoiNWUyMTU1NzE5ZmY2NjUxMGE1NThjZTE4IiwiaWF0IjoxNTc5NjA2MzMwfQ.t3bMGncjg5-TEWFalS3OcJZ50ytlQLyQVhjMfAorh8s
 
 {
-    "title": "Checking with logged-in user",
+    "title": "Creating blog with Thelazyoxymoron",
     "author": "Siddhartha",
     "url": "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
     "likes": 10
