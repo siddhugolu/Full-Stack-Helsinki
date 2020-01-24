@@ -22,6 +22,15 @@ const App = () => {
 					})
 	}, [])
 
+	useEffect(() => {
+		const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
+		if(loggedUserJSON) {
+			const user = JSON.parse(loggedUserJSON)
+			setUser(user)
+			noteService.setToken(user.token)
+		}
+	}, [])
+
 	const notesToShow = showAll ? notes : notes.filter(note => note.important === true)
 
 	const toggleImportanceOf = id => {
@@ -75,7 +84,10 @@ const App = () => {
 			const user = await loginService.login({
 				username, password
 			})
-			console.log(user)
+
+			window.localStorage.setItem(
+				'loggedNoteappUser', JSON.stringify(user)
+			)
 			noteService.setToken(user.token)
 			setUser(user)
 			setUsername('')
