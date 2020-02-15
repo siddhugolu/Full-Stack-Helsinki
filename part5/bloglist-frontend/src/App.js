@@ -3,10 +3,14 @@ import Notification from './components/Notification'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import BlogForm from './components/Add_Blog';
 
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -82,6 +86,19 @@ const App = () => {
     setUser(null)
   }
 
+
+  const handleTitleChange = (event) => {
+    setTitle(event.target.value)
+  }
+
+  const handleAuthorChange = (event) => {
+    setAuthor(event.target.value)
+  }
+
+  const handleUrlChange = (event) => {
+    setUrl(event.target.value)
+  }
+
   return (
     <div>
       <h1> Blog Application </h1>
@@ -100,6 +117,11 @@ const App = () => {
             </button>
             <h2> Blogs </h2>
             {  blogsToShow() }
+            <h2> Create New </h2> 
+            <BlogForm blogs={blogs} setBlogs={setBlogs}
+            title={title} setTitle={setTitle} handleTitleChange={handleTitleChange}
+            author={author} setAuthor={setAuthor} handleAuthorChange={handleAuthorChange}
+            url={url} setUrl={setUrl} handleUrlChange={handleUrlChange} />
           </div>
 
       }
