@@ -3,7 +3,8 @@ import Notification from './components/Notification'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
-import BlogForm from './components/Add_Blog';
+import BlogForm from './components/Add_Blog'
+import './index.css'
 
 
 const App = () => {
@@ -15,6 +16,7 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
+  const [isError, setIsError] = useState(false)
  
   useEffect(() => {
     blogService.getAll()
@@ -53,6 +55,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
+      setIsError(true)
       setErrorMessage('Wrong Credentials')
       setTimeout(() => {
         setErrorMessage(null)
@@ -103,7 +106,7 @@ const App = () => {
     <div>
       <h1> Blog Application </h1>
 
-      <Notification message={errorMessage} />
+      <Notification message={errorMessage} isFailure={isError}/>
 
       { user === null ?
           <div>
@@ -121,7 +124,10 @@ const App = () => {
             <BlogForm blogs={blogs} setBlogs={setBlogs}
             title={title} setTitle={setTitle} handleTitleChange={handleTitleChange}
             author={author} setAuthor={setAuthor} handleAuthorChange={handleAuthorChange}
-            url={url} setUrl={setUrl} handleUrlChange={handleUrlChange} />
+            url={url} setUrl={setUrl} handleUrlChange={handleUrlChange}
+            setErrorMessage={setErrorMessage}
+            setIsError={setIsError}
+            />
           </div>
 
       }

@@ -4,7 +4,8 @@ import blogService from '../services/blogs'
 const BlogForm = ({ blogs, setBlogs,
     title, setTitle, handleTitleChange,
     author, setAuthor, handleAuthorChange,
-    url, setUrl, handleUrlChange }) => {
+    url, setUrl, handleUrlChange,
+    setErrorMessage, setIsError }) => {
         
         const addBlog = (event) => {
             event.preventDefault()
@@ -17,6 +18,11 @@ const BlogForm = ({ blogs, setBlogs,
         blogService.create(blogObject)
               .then(returnedBlog => {
                 setBlogs(blogs.concat(returnedBlog))
+                setIsError(false)
+                setErrorMessage(`A new blog ${title} added`)
+                setTimeout(() => {
+                    setErrorMessage(null)
+                }, 3000)
                 setTitle('')
                 setAuthor('')
                 setUrl('')
