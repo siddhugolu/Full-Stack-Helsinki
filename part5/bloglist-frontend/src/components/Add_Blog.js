@@ -15,6 +15,7 @@ const BlogForm = ({ blogs, setBlogs,
               url: url
         }
         
+        
         blogService.create(blogObject)
               .then(returnedBlog => {
                 setBlogs(blogs.concat(returnedBlog))
@@ -27,10 +28,18 @@ const BlogForm = ({ blogs, setBlogs,
                 setAuthor('')
                 setUrl('')
               })
+              .catch(error => {
+                  setIsError(true)
+                  setErrorMessage('title/author/url missing')
+                  setTimeout(() => {
+                      setErrorMessage(null)
+                  }, 5000)
+              })
         }
 
     return (
     <div>
+      <h2> Create New </h2> 
       <form onSubmit={addBlog}>
         title: <input value={title} onChange={handleTitleChange}/>
         <div> author: <input value={author} onChange={handleAuthorChange} /> </div>

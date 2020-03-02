@@ -4,6 +4,7 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import BlogForm from './components/Add_Blog'
+import Togglable from './components/Togglable'
 import './index.css'
 
 
@@ -84,6 +85,18 @@ const App = () => {
     </form>
   )
 
+  const addNewBlogForm = () => (
+    <Togglable buttonLabel='new note'>
+      <BlogForm blogs={blogs} setBlogs={setBlogs}
+            title={title} setTitle={setTitle} handleTitleChange={handleTitleChange}
+            author={author} setAuthor={setAuthor} handleAuthorChange={handleAuthorChange}
+            url={url} setUrl={setUrl} handleUrlChange={handleUrlChange}
+            setErrorMessage={setErrorMessage}
+            setIsError={setIsError}
+        />
+    </Togglable>
+  )
+
   const logout = () => {
     window.localStorage.removeItem('loggedNoteappUser')
     setUser(null)
@@ -118,16 +131,11 @@ const App = () => {
             <button onClick={logout}>
               logout
             </button>
+
+            { addNewBlogForm() }
             <h2> Blogs </h2>
             {  blogsToShow() }
-            <h2> Create New </h2> 
-            <BlogForm blogs={blogs} setBlogs={setBlogs}
-            title={title} setTitle={setTitle} handleTitleChange={handleTitleChange}
-            author={author} setAuthor={setAuthor} handleAuthorChange={handleAuthorChange}
-            url={url} setUrl={setUrl} handleUrlChange={handleUrlChange}
-            setErrorMessage={setErrorMessage}
-            setIsError={setIsError}
-            />
+            
           </div>
 
       }
