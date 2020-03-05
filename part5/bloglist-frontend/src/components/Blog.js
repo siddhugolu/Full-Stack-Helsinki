@@ -27,11 +27,9 @@ const Blog = ({ blog, setBlogs, blogs }) => {
       url: blog.url,
       likes: blog.likes + 1
     }
-    console.log(newObject)
 
     blogService.update(blog.id, newObject)
       .then(returnedBlog => {
-        console.log('reached here')
         setBlogs(blogs.map(b => b.id !== blog.id ? b : returnedBlog))
       })
   }
