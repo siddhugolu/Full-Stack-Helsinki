@@ -36,7 +36,7 @@ const App = () => {
   }, [])
 
   const blogsToShow = () => {
-    blogs.sort((a, b) => a.likes - b.likes)
+    blogs.sort((a, b) => b.likes - a.likes)
     return blogs.map(blog =>
     <Blog key={blog.id} blog={blog} setBlogs={setBlogs} blogs={blogs} />
   )

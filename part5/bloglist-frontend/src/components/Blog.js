@@ -34,6 +34,15 @@ const Blog = ({ blog, setBlogs, blogs }) => {
       })
   }
 
+  const deleteBlog = () => {
+    if(window.confirm(`Delete ${blog.title} by ${blog.author}?`)) {
+      blogService.remove(blog.id)
+        .then(returnedBlog => {
+          setBlogs(blogs.map(b => b))
+        })
+    }
+  }
+
 
   return (
   <div style={blogStyle}>
@@ -49,6 +58,7 @@ const Blog = ({ blog, setBlogs, blogs }) => {
         <button onClick={increaseLike}> like </button>
       </div>
       <div> Added by {blog.user.name} </div>
+      <button onClick={deleteBlog}> delete </button>
     </div>
   </div>
 )}
