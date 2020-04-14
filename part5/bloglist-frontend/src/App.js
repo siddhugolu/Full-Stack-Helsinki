@@ -28,8 +28,10 @@ const App = () => {
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
+  
     if(loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
+      console.log(user)
       setUser(user)
       blogService.setToken(user.token)
     }
@@ -38,7 +40,7 @@ const App = () => {
   const blogsToShow = () => {
     blogs.sort((a, b) => b.likes - a.likes)
     return blogs.map(blog =>
-    <Blog key={blog.id} blog={blog} setBlogs={setBlogs} blogs={blogs} />
+    <Blog key={blog.id} blog={blog} setBlogs={setBlogs} blogs={blogs} user={user} />
   )
 }
 

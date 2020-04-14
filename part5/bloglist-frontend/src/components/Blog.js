@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog, setBlogs, blogs }) => {
+const Blog = ({ blog, setBlogs, blogs, user }) => {
   const [visible, setVisible] = useState(false)
 
   const hideWhenVisible = { display: visible ? 'none' : '' }
   const showWhenVisible = { display: visible ? '' : 'none' }
+
 
   const toggleVisibility = () => {
     setVisible(!visible)
@@ -58,7 +59,13 @@ const Blog = ({ blog, setBlogs, blogs }) => {
         <button onClick={increaseLike}> like </button>
       </div>
       <div> Added by {blog.user.name} </div>
-      <button onClick={deleteBlog}> delete </button>
+      { user.username === blog.user.username
+        ? <div>
+            <button onClick={deleteBlog}> delete </button>
+          </div>
+        : <div></div>
+      }
+      
     </div>
   </div>
 )}
