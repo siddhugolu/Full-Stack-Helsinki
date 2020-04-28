@@ -1,13 +1,13 @@
-import React from 'react';
+import React from 'react'
 
 const Note = ({ note, toggleImportance }) => {
-	const label = note.important ? 'Make not important' : 'Make important'
+  const label = note.important ? 'Make not important' : 'Make important'
 
-	return (
-		<li> {note.content}
-		<button onClick={toggleImportance}> {label} </button> 
-		</li>
-	)
+  return (
+    <li className='note'> {note.content}
+      <button onClick={toggleImportance}> {label} </button>
+    </li>
+  )
 }
 
-export default Note 
+export default Note
