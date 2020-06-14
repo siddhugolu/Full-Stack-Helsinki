@@ -40,7 +40,9 @@ const App = () => {
   const blogsToShow = () => {
     blogs.sort((a, b) => b.likes - a.likes)
     return blogs.map(blog =>
-    <Blog key={blog.id} blog={blog} setBlogs={setBlogs} blogs={blogs} user={user} />
+    <Blog key={blog.id} blog={blog} setBlogs={setBlogs}
+        blogs={blogs} user={user}
+        increaseLike={() => increaseLikeOf(blog)} />
   )
 }
 
@@ -118,6 +120,21 @@ const App = () => {
 
   const handleUrlChange = (event) => {
     setUrl(event.target.value)
+  }
+
+  const increaseLikeOf = (blog) => {
+
+    const newObject = { 
+      title: blog.title,
+      author: blog.author,
+      url: blog.url,
+      likes: blog.likes + 1
+    }
+
+    blogService.update(blog.id, newObject)
+      .then(returnedBlog => {
+        setBlogs(blogs.map(b => b.id !== blog.id ? b : returnedBlog))
+      })
   }
 
   return (

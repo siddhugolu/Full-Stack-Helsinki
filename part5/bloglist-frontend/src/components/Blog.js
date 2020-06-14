@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog, setBlogs, blogs, user }) => {
+const Blog = ({ blog, setBlogs, blogs, user, increaseLike }) => {
   const [visible, setVisible] = useState(false)
 
   const hideWhenVisible = { display: visible ? 'none' : '' }
@@ -20,21 +20,6 @@ const Blog = ({ blog, setBlogs, blogs, user }) => {
     marginBottom: 5
   }
 
-  const increaseLike = () => {
-
-    const newObject = { 
-      title: blog.title,
-      author: blog.author,
-      url: blog.url,
-      likes: blog.likes + 1
-    }
-
-    blogService.update(blog.id, newObject)
-      .then(returnedBlog => {
-        setBlogs(blogs.map(b => b.id !== blog.id ? b : returnedBlog))
-      })
-  }
-
   const deleteBlog = () => {
     if(window.confirm(`Delete ${blog.title} by ${blog.author}?`)) {
       blogService.remove(blog.id)
@@ -46,11 +31,12 @@ const Blog = ({ blog, setBlogs, blogs, user }) => {
 
 
   return (
-  <div style={blogStyle}>
-    <div onClick={toggleVisibility} style={hideWhenVisible}>
-      {blog.title} ------> {blog.author}
-    </div>
-    <div onClick={toggleVisibility} style={showWhenVisible}>
+  <div style={blogStyle} className="Blog">
+      <div style={hideWhenVisible} className="defaultShortView">
+        {blog.title} ------> {blog.author} 
+        <button onClick={toggleVisibility}> Show Details </button>
+      </div>
+    <div style={showWhenVisible} className = "longView">
       <div> {blog.title} </div>
       <div> {blog.author} </div>
       <div> {blog.url} </div>
@@ -65,6 +51,10 @@ const Blog = ({ blog, setBlogs, blogs, user }) => {
           </div>
         : <div></div>
       }
+
+      <div>
+        <button onClick={toggleVisibility}> Hide Details </button>
+      </div>
       
     </div>
   </div>
