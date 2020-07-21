@@ -1,49 +1,58 @@
-import React from 'react'
-import blogService from '../services/blogs'
+import React, { useState } from 'react'
 
-const BlogForm = ({ blogs, setBlogs,
-    title, setTitle, handleTitleChange,
-    author, setAuthor, handleAuthorChange,
-    url, setUrl, handleUrlChange,
-    setErrorMessage, setIsError }) => {
+const BlogForm = ({ createBlog }) => {
+
+      const [title, setTitle] = useState('')
+      const [author, setAuthor] = useState('')
+      const [url, setUrl] = useState('')
+
+      const handleTitleChange = (event) => {
+        setTitle(event.target.value)
+      }
+    
+      const handleAuthorChange = (event) => {
+        setAuthor(event.target.value)
+      }
+    
+      const handleUrlChange = (event) => {
+        setUrl(event.target.value)
+      }
         
-        const addBlog = (event) => {
-            event.preventDefault()
-            const blogObject = {
-              title: title,
-              author: author,
-              url: url
-        }
-        
-        
-        blogService.create(blogObject)
-              .then(returnedBlog => {
-                setBlogs(blogs.concat(returnedBlog))
-                setIsError(false)
-                setErrorMessage(`A new blog ${title} added`)
-                setTimeout(() => {
-                    setErrorMessage(null)
-                }, 3000)
-                setTitle('')
-                setAuthor('')
-                setUrl('')
-              })
-              .catch(error => {
-                  setIsError(true)
-                  setErrorMessage('title/author/url missing')
-                  setTimeout(() => {
-                      setErrorMessage(null)
-                  }, 5000)
-              })
-        }
+      const addBlog = (event) => {
+        event.preventDefault()
+        createBlog({
+          title: title,
+          author: author,
+          url: url
+        })
+
+        setTitle('')
+        setAuthor('')
+        setUrl('')
+      }
 
     return (
-    <div>
+    <div className="formDiv">
       <h2> Create New </h2> 
       <form onSubmit={addBlog}>
-        title: <input value={title} onChange={handleTitleChange}/>
-        <div> author: <input value={author} onChange={handleAuthorChange} /> </div>
-        <div> url: <input value={url} onChange={handleUrlChange} /> </div>
+        title: <input
+                  id='title'
+                  value={title}
+                  onChange={handleTitleChange}
+                />
+        <div>
+          author: <input 
+                    id='author'
+                    value={author}
+                    onChange={handleAuthorChange}
+                  /> 
+        </div>
+        <div>
+          url: <input
+                  value={url}
+                  onChange={handleUrlChange}
+                /> 
+        </div>
         <button type='submit'> Create </button>
       </form>
     </div>

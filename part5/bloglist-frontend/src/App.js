@@ -10,17 +10,17 @@ import './index.css'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [isError, setIsError] = useState(false)
+
+  const blogFormRef = React.createRef()
  
   useEffect(() => {
-    blogService.getAll()
+    blogService
+      .getAll()
       .then(initialBlogs => {
         setBlogs(initialBlogs)
       })
@@ -42,8 +42,31 @@ const App = () => {
     return blogs.map(blog =>
     <Blog key={blog.id} blog={blog} setBlogs={setBlogs}
         blogs={blogs} user={user}
-        increaseLike={() => increaseLikeOf(blog)} />
+        increaseLike={() => increaseLikeOf(blog)}
+        deleteBlog={() => deleteBlogOf(blog)}
+        />
   )
+}
+
+const addBlog = (blogObject) => {
+  blogFormRef.current.toggleVisibility()
+  blogService
+    .create(blogObject)
+    .then(returnedBlog => {
+      setBlogs(blogs.concat(returnedBlog))
+      setIsError(false)
+      setErrorMessage(`A new blog ${blogObject.title} added`)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 3000)
+    })
+    .catch(error => {
+      setIsError(true)
+      setErrorMessage('title/author/url missing')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    })
 }
 
 
@@ -93,33 +116,14 @@ const App = () => {
   )
 
   const addNewBlogForm = () => (
-    <Togglable buttonLabel='new note'>
-      <BlogForm blogs={blogs} setBlogs={setBlogs}
-            title={title} setTitle={setTitle} handleTitleChange={handleTitleChange}
-            author={author} setAuthor={setAuthor} handleAuthorChange={handleAuthorChange}
-            url={url} setUrl={setUrl} handleUrlChange={handleUrlChange}
-            setErrorMessage={setErrorMessage}
-            setIsError={setIsError}
-        />
+    <Togglable buttonLabel='new blog' ref={blogFormRef}>
+      <BlogForm createBlog={addBlog} />
     </Togglable>
   )
 
   const logout = () => {
     window.localStorage.removeItem('loggedNoteappUser')
     setUser(null)
-  }
-
-
-  const handleTitleChange = (event) => {
-    setTitle(event.target.value)
-  }
-
-  const handleAuthorChange = (event) => {
-    setAuthor(event.target.value)
-  }
-
-  const handleUrlChange = (event) => {
-    setUrl(event.target.value)
   }
 
   const increaseLikeOf = (blog) => {
@@ -135,6 +139,15 @@ const App = () => {
       .then(returnedBlog => {
         setBlogs(blogs.map(b => b.id !== blog.id ? b : returnedBlog))
       })
+  }
+
+  const deleteBlogOf = (blog) => {
+    if(window.confirm(`Delete ${blog.title} by ${blog.author}?`)) {
+      blogService.remove(blog.id)
+        .then(returnedBlog => {
+          setBlogs(blogs.map(b => b))
+        })
+    }
   }
 
   return (

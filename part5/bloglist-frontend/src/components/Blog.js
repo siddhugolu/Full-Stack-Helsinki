@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
-import blogService from '../services/blogs'
 
-const Blog = ({ blog, setBlogs, blogs, user, increaseLike }) => {
+const Blog = ({ blog, setBlogs, blogs, user, increaseLike, deleteBlog }) => {
   const [visible, setVisible] = useState(false)
 
   const hideWhenVisible = { display: visible ? 'none' : '' }
@@ -18,15 +17,6 @@ const Blog = ({ blog, setBlogs, blogs, user, increaseLike }) => {
     border: 'solid',
     borderWidth: 1,
     marginBottom: 5
-  }
-
-  const deleteBlog = () => {
-    if(window.confirm(`Delete ${blog.title} by ${blog.author}?`)) {
-      blogService.remove(blog.id)
-        .then(returnedBlog => {
-          setBlogs(blogs.map(b => b))
-        })
-    }
   }
 
 
